@@ -74,12 +74,12 @@ def crear_logo_pdf(ruta_salida=os.path.join(STATIC_DIR, "logo.webp"), tamaño=(2
             fuente = ImageFont.load_default()
             break
 
-    bbox = draw.textbbox((0, 0), texto, font=fuente)
-    texto_ancho = bbox[2] - bbox[0]
-    texto_alto = bbox[3] - bbox[1]
-    if texto_ancho <= tamaño[0] - 2*padding and texto_alto <= tamaño[1] - 2*padding:
-            break
-    fuente_size -= 1
+        bbox = draw.textbbox((0, 0), texto, font=fuente)
+        texto_ancho = bbox[2] - bbox[0]
+        texto_alto = bbox[3] - bbox[1]
+        if texto_ancho <= tamaño[0] - 2*padding and texto_alto <= tamaño[1] - 2*padding:
+                break
+        fuente_size -= 1
     posicion = ((tamaño[0] - texto_ancho) // 2, (tamaño[1] - texto_alto) // 2)
 
     draw.text(posicion, texto, fill=texto_blanco, font=fuente)
@@ -109,12 +109,12 @@ def crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo_pwa.png"), tamaño
             fuente = ImageFont.load_default()
             break
             
-    bbox = draw.textbbox((0, 0), texto, font=fuente)
-    texto_ancho = bbox[2] - bbox[0]
-    texto_alto = bbox[3] - bbox[1]
-    
-    if texto_ancho <= 2*radio - 2*padding and texto_alto <= 2*radio - 2*padding:
-            break
+        bbox = draw.textbbox((0, 0), texto, font=fuente)
+        texto_ancho = bbox[2] - bbox[0]
+        texto_alto = bbox[3] - bbox[1]
+        
+        if texto_ancho <= 2*radio - 2*padding and texto_alto <= 2*radio - 2*padding:
+                break
         fuente_size -= 1
     
     posicion = ((2*radio - ancho_texto)//2, (2*radio - alto_texto)//2)
@@ -358,7 +358,7 @@ def generar_html(pdfs):
 
         footer p {{
             margin: 0;
-            font-size: 12px;
+            font-size: 14px;
             color: #555;
         }}
         
@@ -452,7 +452,7 @@ if (!file) {
 </script>
 </body>
 <footer>
-        <img src="/static/logo.webp" alt="{folder_name}">
+        <img src="static/logo.webp" alt="{folder_name}">
         <p>© 2025 Física Web App</p>
     </footer>
 </html>"""
