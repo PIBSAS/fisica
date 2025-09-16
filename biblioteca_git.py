@@ -1,6 +1,8 @@
 import os
 import json
 import io
+import urllib.request
+import zipfile
 from urllib.parse import quote
 
 import fitz
@@ -11,12 +13,30 @@ PDF_DIR = BASE_DIR
 ANCHO = 332
 ALTO = 443
 STATIC_DIR = os.path.join(BASE_DIR, "static")
+PDFJS_DIR = os.path.join(STATIC_DIR, "pdfjs")
 os.makedirs(STATIC_DIR, exist_ok=True)
 
 
 # --- Funciones ---
 
+def descargar_pdfjs():
+    """Descarga y extrae la última versión estable de PDF.js en static/pdfjs/"""
+    url = "https://github.com/mozilla/pdf.js/releases/download/v5.4.149/pdfjs-5.4.149-dist.zip"
+    zip_path = os.path.join(STATIC_DIR, "pdfjs-dist.zip")
 
+    if os.path.exists(PDFJS_DIR):
+        print("PDF.js ya está descargado.")
+        return
+
+    print("⬇Descargando PDF.js...")
+    urllib.request.urlretrieve(url, zip_path)
+
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall(PDFJS_DIR)
+
+    os.remove(zip_path)
+    print("PDF.js instalado en static/pdfjs/")
+    
 def buscar_pdfs_en_root(base_dir):
     """Busca PDFs en la carpeta raíz y devuelve lista de tuplas (ruta, carpeta, archivo)."""
     pdfs = []
@@ -349,7 +369,7 @@ def generar_html(pdfs):
         ruta_pdf = quote(f"{archivo}")
         html += f"""
         <div class="pdf-container">
-            <img src="{ruta_miniatura}" class="pdf-thumbnail" onclick="window.open('{ruta_pdf}', '_blank')">
+            <img src="{ruta_miniatura}" class="pdf-thumbnail" onclick="window.open('static/viewer.html?file={ruta_pdf}', '_blank')">
             <p class="pdf-title">{titulo_limpio}</p>
         </div>
 """
@@ -386,15 +406,16 @@ if (!file) {
   document.body.innerHTML = "<p>No se proporcionó un archivo PDF.</p>";
 } else {
   document.getElementById("visor").src =
-    "https://mozilla.github.io/pdf.js/web/viewer.html?file=" + encodeURIComponent(file);
+    "static/pdfjs/web/viewer.html?file=" + encodeURIComponent(file);
 }
 </script>
 </body>
 </html>"""
-    ruta_viewer = os.path.join(BASE_DIR, "viewer.html")
+ 
+    ruta_viewer = os.path.join(STATIC_DIR, "viewer.html")
     with open(ruta_viewer, "w", encoding="utf-8") as f:
         f.write(html_viewer)
-    print("viewer.html generado correctamente")
+    print(f"viewer.html generado correctamente en {ruta_viewer}")
 
 
 # --- Ejecución ---
