@@ -13,7 +13,7 @@
             "type": "image/png"
         },
         {
-            "src": "logo_pwa.png",
+            "src": "logo_pwa-512.png",
             "sizes": "512x512",
             "type": "image/png"
         },
