@@ -23,6 +23,7 @@ def buscar_pdfs_en_root(base_dir):
     for f in os.listdir(base_dir):
         if f.lower().endswith(".pdf"):
             pdfs.append((os.path.join(base_dir, f), ".", f))
+    pdfs.sort(key=lambda x:  x[2].lower())
     return pdfs
 
 
