@@ -126,7 +126,7 @@ def crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo_pwa.png"), tamaño
 
 def crear_favicon():
     """Crea favicon.ico a partir del logo."""
-    ruta_logo = os.path.join(STATIC_DIR, "logo_pwa.png")
+    ruta_logo = os.path.join(STATIC_DIR, "logo.webp")
     ruta_fav = os.path.join(STATIC_DIR, "favicon.ico")
     img = Image.open(ruta_logo).convert("RGBA")
     img = img.resize((512, 512), Image.LANCZOS)
@@ -146,6 +146,7 @@ def crear_manifest():
         "theme_color": "#dc143c",
         "description": "Visualizador de PDFs con miniaturas",
         "icons": [
+            {"src": "logo_pwa.png", "sizes": "192x192", "type": "image/png"},
             {"src": "logo_pwa.png", "sizes": "512x512", "type": "image/png"},
             {
                 "src": "favicon.ico",
@@ -510,7 +511,8 @@ if (!file) {
 pdf_files = buscar_pdfs_en_root(PDF_DIR)
 extraer_miniaturas(pdf_files)
 crear_logo_pdf()
-crear_logo_pwa()
+crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo-192.png"), tamaño=(192,192))
+crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo-512.png"), tamaño=(512,512))
 crear_favicon()
 crear_manifest()
 crear_service_worker(pdf_files)
