@@ -126,7 +126,7 @@ def crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo_pwa.png"), tamaño
 
 def crear_favicon():
     """Crea favicon.ico a partir del logo."""
-    ruta_logo = os.path.join(STATIC_DIR, "logo.png")
+    ruta_logo = os.path.join(STATIC_DIR, "logo_pwa.png")
     ruta_fav = os.path.join(STATIC_DIR, "favicon.ico")
     img = Image.open(ruta_logo).convert("RGBA")
     img = img.resize((1024, 1024), Image.LANCZOS)
