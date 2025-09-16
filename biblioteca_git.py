@@ -426,6 +426,7 @@ crear_logo_pdf()
 crear_favicon()
 crear_manifest()
 crear_service_worker(pdf_files)
+descargar_pdfjs()
 generar_html(pdf_files)
 generar_viewer_html()
 
