@@ -411,7 +411,7 @@ def generar_html(pdfs):
     function abrirPDF(pdf) {{
         const modal = document.getElementById('modal-visor');
         const iframe = document.getElementById('visor-pdf');
-        iframe.src = `static/pdfjs/web/viewer.html?file=${{encodeURIComponent("../../../" + pdf)}}`;
+        iframe.src = `static/pdfjs/web/viewer.html?file=${{encodeURIComponent("../../" + pdf)}}`;
         modal.style.display = 'block';
     }}
     function cerrarModal() {{
@@ -447,7 +447,7 @@ def generar_html(pdfs):
         ruta_pdf = quote(f"{archivo}")
         html += f"""
         <div class="pdf-container">
-            <img src="{ruta_miniatura}" class="pdf-thumbnail" onclick="abrirPDF('static/{archivo}')">
+            <img src="{ruta_miniatura}" class="pdf-thumbnail" onclick="abrirPDF('{archivo}')">
             <p class="pdf-title">{titulo_limpio}</p>
         </div>
 """
@@ -494,7 +494,7 @@ if (!file) {
   document.body.innerHTML = "<p>No se proporcionó un archivo PDF.</p>";
 } else {
   document.getElementById("visor").src =
-    "pdfjs/web/viewer.html?file=" + encodeURIComponent("../../../"+ file);
+    "pdfjs/web/viewer.html?file=" + encodeURIComponent("../"+ file);
 }
 </script>
 </body>
