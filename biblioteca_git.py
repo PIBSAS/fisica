@@ -383,17 +383,16 @@ def generar_html(pdfs):
         }}
         
         #modal-visor iframe {{
-            width:90%; height:90%;
-            margin:5% auto;
+            width:100%; height:100%;
             display:block;
             border:none;
-            border-radius:10px;
         }}
         
         #modal-visor .cerrar {{
-            position:absolute; top:15px; right:20px;
-            font-size:24px; color:white;
+            position:absolute; top:11px; right:10px;
+            font-size:30px; color:white;
             cursor:pointer;
+            z-index: 10000;
         }}
     </style>
     <div id="fondo"></div>
