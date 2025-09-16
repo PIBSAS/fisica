@@ -28,7 +28,7 @@ jobs:
 
       - name: Run PDF build script
         run: |
-          python biblioteca_v4.py
+          python biblioteca_git.py
 
       - name: Commit & Push changes
         env:
