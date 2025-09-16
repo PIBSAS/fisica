@@ -372,6 +372,29 @@ def generar_html(pdfs):
             width: calc(100% - 80px);                               
             box-sizing: border-box;                       
         }}
+        
+        #modal-visor {{
+            display: none;
+            position: fixed;
+            top:0; left:0;
+            width:100%; height:100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 9999;
+        }}
+        
+        #modal-visor iframe {{
+            width:90%; height:90%;
+            margin:5% auto;
+            display:block;
+            border:none;
+            border-radius:10px;
+        }}
+        
+        #modal-visor .cerrar {{
+            position:absolute; top:15px; right:20px;
+            font-size:24px; color:white;
+            cursor:pointer;
+        }}
     </style>
     <div id="fondo"></div>
     <script>
@@ -383,6 +406,20 @@ def generar_html(pdfs):
         requestAnimationFrame(animateBackground);
     }}
     animateBackground();
+</script>
+<script>
+    function abrirPDF(pdf) {{
+        const modal = document.getElementById('modal-visor');
+        const iframe = document.getElementById('visor-pdf');
+        iframe.src = `static/pdfjs/web/viewer.html?file=${{encodeURIComponent("../../../" + pdf)}}`;
+        modal.style.display = 'block';
+    }}
+    function cerrarModal() {{
+        const modal = document.getElementById('modal-visor');
+        const iframe = document.getElementById('visor-pdf');
+        iframe.src = '';
+        modal.style.display = 'none';
+    }}
 </script>
     <script>
     if ('serviceWorker' in navigator) {{
@@ -410,13 +447,23 @@ def generar_html(pdfs):
         ruta_pdf = quote(f"{archivo}")
         html += f"""
         <div class="pdf-container">
-            <img src="{ruta_miniatura}" class="pdf-thumbnail" onclick="window.open('static/viewer.html?file={ruta_pdf}', '_blank')">
+            <img src="{ruta_miniatura}" class="pdf-thumbnail" onclick="abrirPDF('static/{archivo}')">
             <p class="pdf-title">{titulo_limpio}</p>
         </div>
 """
 
     html += """
-    </div>
+</div>
+
+<div id="modal-visor">
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <iframe id="visor-pdf"></iframe>
+</div>
+
+<footer>
+<img src="static/logo.webp" alt="{folder_name}">
+<p>© 2025 Física Web App</p>
+</footer>
 </body>
 </html>
 """
@@ -450,11 +497,7 @@ if (!file) {
     "pdfjs/web/viewer.html?file=" + encodeURIComponent("../../../"+ file);
 }
 </script>
-<footer>
-        <img src="static/logo.webp" alt="{folder_name}">
-        <p>© 2025 Física Web App</p>
-    </footer>
-    </body>
+</body>
 </html>"""
  
     ruta_viewer = os.path.join(STATIC_DIR, "viewer.html")
