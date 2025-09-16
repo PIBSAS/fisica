@@ -61,25 +61,28 @@ def crear_logo_pdf(ruta_salida=os.path.join(STATIC_DIR, "logo.webp"), tamaño=(2
     fondo_rojo = (220, 20, 60)
     texto_blanco = (255, 255, 255)
 
-    img = Image.new("RGB", tamaño, fondo_rojo)
+    escala = 4
+    tamaño_alta_res = (tamaño[0]*escala, tamaño[1]*escala)
+    img = Image.new("RGB", tamaño_alta_res, fondo_rojo)
     draw = ImageDraw.Draw(img)
 
     try:
         fuente = ImageFont.truetype(
             os.path.join(BASE_DIR, "arialbd.ttf"),
-            size=int(tamaño[1] * 0.4)
+            size=int(tamaño_alta_res[1] * 0.4)
         )
     except OSError:
         fuente = ImageFont.load_default()
 
-    texto = "PDF"
+    texto = "Física"
     bbox = draw.textbbox((0, 0), texto, font=fuente)
     texto_ancho = bbox[2] - bbox[0]
     texto_alto = bbox[3] - bbox[1]
-    posicion = ((tamaño[0] - texto_ancho) // 2, (tamaño[1] - texto_alto) // 2)
+    posicion = ((tamaño_alta_res[0] - texto_ancho) // 2, (tamaño_alta_res[1] - texto_alto) // 2)
 
     draw.text(posicion, texto, fill=texto_blanco, font=fuente)
-    img.save(ruta_salida, "WEBP")
+    img_red = img.resize(tamaño, Image.LANCZOS)
+    img_red.save(ruta_salida, "WEBP", quality=95)
     print(f"Logo PDF creado: {ruta_salida}")
 
 
