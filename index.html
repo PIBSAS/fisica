@@ -138,6 +138,29 @@
             width: calc(100% - 80px);                               
             box-sizing: border-box;                       
         }
+        
+        #modal-visor {
+            display: none;
+            position: fixed;
+            top:0; left:0;
+            width:100%; height:100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 9999;
+        }
+        
+        #modal-visor iframe {
+            width:90%; height:90%;
+            margin:5% auto;
+            display:block;
+            border:none;
+            border-radius:10px;
+        }
+        
+        #modal-visor .cerrar {
+            position:absolute; top:15px; right:20px;
+            font-size:24px; color:white;
+            cursor:pointer;
+        }
     </style>
     <div id="fondo"></div>
     <script>
@@ -149,6 +172,20 @@
         requestAnimationFrame(animateBackground);
     }
     animateBackground();
+</script>
+<script>
+    function abrirPDF(pdf) {
+        const modal = document.getElementById('modal-visor');
+        const iframe = document.getElementById('visor-pdf');
+        iframe.src = `static/pdfjs/web/viewer.html?file=${encodeURIComponent("../../../" + pdf)}`;
+        modal.style.display = 'block';
+    }
+    function cerrarModal() {
+        const modal = document.getElementById('modal-visor');
+        const iframe = document.getElementById('visor-pdf');
+        iframe.src = '';
+        modal.style.display = 'none';
+    }
 </script>
     <script>
     if ('serviceWorker' in navigator) {
@@ -169,55 +206,65 @@
     <div class="pdfs-container">
 
         <div class="pdf-container">
-            <img src="static/00%20Tema_%202013-04%20_%20F%C3%ADsica%201%20%282013%29%20_%20UNM%20-%20Campus%20Virtual_Septiembre.webp" class="pdf-thumbnail" onclick="window.open('static/viewer.html?file=00%20Tema_%202013-04%20_%20F%C3%ADsica%201%20%282013%29%20_%20UNM%20-%20Campus%20Virtual_Septiembre.pdf', '_blank')">
+            <img src="static/00%20Tema_%202013-04%20_%20F%C3%ADsica%201%20%282013%29%20_%20UNM%20-%20Campus%20Virtual_Septiembre.webp" class="pdf-thumbnail" onclick="abrirPDF('static/00 Tema_ 2013-04 _ Física 1 (2013) _ UNM - Campus Virtual_Septiembre.pdf')">
             <p class="pdf-title">00 Tema  2013 04   Física 1 (2013)   UNM   Campus Virtual Septiembre</p>
         </div>
 
         <div class="pdf-container">
-            <img src="static/01%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_2%2027-34.webp" class="pdf-thumbnail" onclick="window.open('static/viewer.html?file=01%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_2%2027-34.pdf', '_blank')">
+            <img src="static/01%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_2%2027-34.webp" class="pdf-thumbnail" onclick="abrirPDF('static/01 Leer Física para Ciencias e Ingeniería Vol 1 Cap_2 27-34.pdf')">
             <p class="pdf-title">01 Leer Física para Ciencias e Ingeniería Vol 1 Cap 2 27 34</p>
         </div>
 
         <div class="pdf-container">
-            <img src="static/02%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_5%20100-111.webp" class="pdf-thumbnail" onclick="window.open('static/viewer.html?file=02%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_5%20100-111.pdf', '_blank')">
+            <img src="static/02%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_5%20100-111.webp" class="pdf-thumbnail" onclick="abrirPDF('static/02 Leer Física para Ciencias e Ingeniería Vol 1 Cap_5 100-111.pdf')">
             <p class="pdf-title">02 Leer Física para Ciencias e Ingeniería Vol 1 Cap 5 100 111</p>
         </div>
 
         <div class="pdf-container">
-            <img src="static/03%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_5%20111-119.webp" class="pdf-thumbnail" onclick="window.open('static/viewer.html?file=03%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_5%20111-119.pdf', '_blank')">
+            <img src="static/03%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_5%20111-119.webp" class="pdf-thumbnail" onclick="abrirPDF('static/03 Leer Física para Ciencias e Ingeniería Vol 1 Cap_5 111-119.pdf')">
             <p class="pdf-title">03 Leer Física para Ciencias e Ingeniería Vol 1 Cap 5 111 119</p>
         </div>
 
         <div class="pdf-container">
-            <img src="static/04%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_5%20115-123.webp" class="pdf-thumbnail" onclick="window.open('static/viewer.html?file=04%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_5%20115-123.pdf', '_blank')">
+            <img src="static/04%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_5%20115-123.webp" class="pdf-thumbnail" onclick="abrirPDF('static/04 Leer Física para Ciencias e Ingeniería Vol 1 Cap_5 115-123.pdf')">
             <p class="pdf-title">04 Leer Física para Ciencias e Ingeniería Vol 1 Cap 5 115 123</p>
         </div>
 
         <div class="pdf-container">
-            <img src="static/05%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_6%20137-141.webp" class="pdf-thumbnail" onclick="window.open('static/viewer.html?file=05%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_6%20137-141.pdf', '_blank')">
+            <img src="static/05%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_6%20137-141.webp" class="pdf-thumbnail" onclick="abrirPDF('static/05 Leer Física para Ciencias e Ingeniería Vol 1 Cap_6 137-141.pdf')">
             <p class="pdf-title">05 Leer Física para Ciencias e Ingeniería Vol 1 Cap 6 137 141</p>
         </div>
 
         <div class="pdf-container">
-            <img src="static/06%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_6%20139-141.webp" class="pdf-thumbnail" onclick="window.open('static/viewer.html?file=06%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_6%20139-141.pdf', '_blank')">
+            <img src="static/06%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_6%20139-141.webp" class="pdf-thumbnail" onclick="abrirPDF('static/06 Leer Física para Ciencias e Ingeniería Vol 1 Cap_6 139-141.pdf')">
             <p class="pdf-title">06 Leer Física para Ciencias e Ingeniería Vol 1 Cap 6 139 141</p>
         </div>
 
         <div class="pdf-container">
-            <img src="static/07%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_7%20163-177.webp" class="pdf-thumbnail" onclick="window.open('static/viewer.html?file=07%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_7%20163-177.pdf', '_blank')">
+            <img src="static/07%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_7%20163-177.webp" class="pdf-thumbnail" onclick="abrirPDF('static/07 Leer Física para Ciencias e Ingeniería Vol 1 Cap_7 163-177.pdf')">
             <p class="pdf-title">07 Leer Física para Ciencias e Ingeniería Vol 1 Cap 7 163 177</p>
         </div>
 
         <div class="pdf-container">
-            <img src="static/08%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_9%20232-242.webp" class="pdf-thumbnail" onclick="window.open('static/viewer.html?file=08%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_9%20232-242.pdf', '_blank')">
+            <img src="static/08%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_9%20232-242.webp" class="pdf-thumbnail" onclick="abrirPDF('static/08 Leer Física para Ciencias e Ingeniería Vol 1 Cap_9 232-242.pdf')">
             <p class="pdf-title">08 Leer Física para Ciencias e Ingeniería Vol 1 Cap 9 232 242</p>
         </div>
 
         <div class="pdf-container">
-            <img src="static/09%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_9%20242-249.webp" class="pdf-thumbnail" onclick="window.open('static/viewer.html?file=09%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_9%20242-249.pdf', '_blank')">
+            <img src="static/09%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_9%20242-249.webp" class="pdf-thumbnail" onclick="abrirPDF('static/09 Leer Física para Ciencias e Ingeniería Vol 1 Cap_9 242-249.pdf')">
             <p class="pdf-title">09 Leer Física para Ciencias e Ingeniería Vol 1 Cap 9 242 249</p>
         </div>
 
-    </div>
+</div>
+
+<div id="modal-visor">
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <iframe id="visor-pdf"></iframe>
+</div>
+
+<footer>
+<img src="static/logo.webp" alt="{folder_name}">
+<p>© 2025 Física Web App</p>
+</footer>
 </body>
 </html>
