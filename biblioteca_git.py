@@ -456,7 +456,7 @@ if (!file) {
 pdf_files = buscar_pdfs_en_root(PDF_DIR)
 extraer_miniaturas(pdf_files)
 crear_logo_pdf()
-crear_logo_wpa()
+crear_logo_pwa()
 crear_favicon()
 crear_manifest()
 crear_service_worker(pdf_files)
