@@ -1,5 +1,8 @@
 name: Build PDFs site
 
+permissions:
+  contents: write
+  
 on:
   push:
     branches:
