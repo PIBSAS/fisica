@@ -61,15 +61,13 @@ def crear_logo_pdf(ruta_salida=os.path.join(STATIC_DIR, "logo.webp"), tamaño=(2
     fondo_rojo = (220, 20, 60)
     texto_blanco = (255, 255, 255)
 
-    escala = 4
-    tamaño_alta_res = (tamaño[0]*escala, tamaño[1]*escala)
-    img = Image.new("RGB", tamaño_alta_res, fondo_rojo)
+    img = Image.new("RGB", tamaño, fondo_rojo)
     draw = ImageDraw.Draw(img)
 
     try:
         fuente = ImageFont.truetype(
             os.path.join(BASE_DIR, "arialbd.ttf"),
-            size=int(tamaño_alta_res[1]*0.8)
+            size=int(tamaño[1]*0.4)
         )
     except OSError:
         fuente = ImageFont.load_default()
@@ -78,12 +76,44 @@ def crear_logo_pdf(ruta_salida=os.path.join(STATIC_DIR, "logo.webp"), tamaño=(2
     bbox = draw.textbbox((0, 0), texto, font=fuente)
     texto_ancho = bbox[2] - bbox[0]
     texto_alto = bbox[3] - bbox[1]
-    posicion = ((tamaño_alta_res[0] - texto_ancho) // 2, (tamaño_alta_res[1] - texto_alto) // 2)
+    posicion = ((tamaño[0] - texto_ancho) // 2, (tamaño[1] - texto_alto) // 2)
 
     draw.text(posicion, texto, fill=texto_blanco, font=fuente)
-    img_red = img.resize(tamaño, Image.LANCZOS)
-    img_red.save(ruta_salida, "WEBP", quality=95)
+    img.resize(tamaño, Image.LANCZOS)
+    img.save(ruta_salida, "WEBP")
     print(f"Logo PDF creado: {ruta_salida}")
+
+def crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo_pwa.png"), tamaño=(512, 512)):
+    """Crea un logo circular para PWA / Google Play en PNG 512x512."""
+    fondo_rojo = (220, 20, 60, 255)  # RGBA
+    texto_blanco = (255, 255, 255, 255)
+
+    # Imagen base RGBA
+    img = Image.new("RGBA", tamaño, (0, 0, 0, 0))  # fondo transparente
+    draw = ImageDraw.Draw(img)
+
+    # Dibujar círculo rojo de fondo
+    radio = min(tamaño)//2
+    draw.ellipse((0, 0, 2*radio, 2*radio), fill=fondo_rojo)
+
+    # Fuente grande y centrada
+    try:
+        fuente = ImageFont.truetype(
+            os.path.join(BASE_DIR, "arialbd.ttf"),
+            size=int(tamaño[1]*0.4)  # 40% de la altura de la imagen
+        )
+    except OSError:
+        fuente = ImageFont.load_default()
+
+    texto = "Física"
+    bbox = draw.textbbox((0, 0), texto, font=fuente)
+    texto_ancho = bbox[2] - bbox[0]
+    texto_alto = bbox[3] - bbox[1]
+    posicion = ((tamaño[0]-texto_ancho)//2, (tamaño[1]-texto_alto)//2)
+    draw.text(posicion, texto, fill=texto_blanco, font=fuente)
+
+    img.save(ruta_salida, "PNG")
+    print(f"Logo PWA creado: {ruta_salida}")
 
 
 def crear_favicon():
@@ -108,7 +138,7 @@ def crear_manifest():
         "theme_color": "#dc143c",
         "description": "Visualizador de PDFs con miniaturas",
         "icons": [
-            {"src": "logo.webp", "sizes": "256x256", "type": "image/webp"},
+            {"src": "logo_pwa.png", "sizes": "512x512", "type": "image/png"},
             {
                 "src": "favicon.ico",
                 "sizes": "128x128 64x64 32x32 24x24 16x16",
@@ -426,6 +456,7 @@ if (!file) {
 pdf_files = buscar_pdfs_en_root(PDF_DIR)
 extraer_miniaturas(pdf_files)
 crear_logo_pdf()
+crear_logo_wpa()
 crear_favicon()
 crear_manifest()
 crear_service_worker(pdf_files)
