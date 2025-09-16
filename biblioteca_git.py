@@ -118,10 +118,10 @@ def crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo_pwa.png"), tamaño
 
 def crear_favicon():
     """Crea favicon.ico a partir del logo."""
-    ruta_logo = os.path.join(STATIC_DIR, "logo.webp")
+    ruta_logo = os.path.join(STATIC_DIR, "logo_pwa.png")
     ruta_fav = os.path.join(STATIC_DIR, "favicon.ico")
     img = Image.open(ruta_logo).convert("RGBA")
-    img = img.resize((128, 128), Image.LANCZOS)
+    img = img.resize((512, 512), Image.LANCZOS)
     img.save(ruta_fav, format="ICO")
 
 
@@ -141,7 +141,7 @@ def crear_manifest():
             {"src": "logo_pwa.png", "sizes": "512x512", "type": "image/png"},
             {
                 "src": "favicon.ico",
-                "sizes": "128x128 64x64 32x32 24x24 16x16",
+                "sizes": "512x512, 256x256, 128x128 64x64 32x32 24x24 16x16",
                 "type": "image/x-icon",
             },
         ],
@@ -153,11 +153,11 @@ def crear_manifest():
 
 def crear_service_worker(pdfs):
     """Crea el service-worker.js para caché de la PWA."""
-    urls = ["./", "logo.webp", "favicon.ico", "site.webmanifest"]
+    urls = ["./", "logo_pwa.png", "favicon.ico", "site.webmanifest"]
     
     for _, _, archivo in pdfs:
         base = os.path.splitext(archivo)[0]
-        miniatura = quote(f"{base}.webp")
+        miniatura = quote(f"{base}.png")
         pdf_url = quote(f"{archivo}")
         urls.append(pdf_url)
         urls.append(miniatura)
