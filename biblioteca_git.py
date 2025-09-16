@@ -364,6 +364,39 @@ def generar_html(pdfs):
         f.write(html)
 
 
+def generar_viewer_html():
+    """Genera un viewer.html que usa PDF.js desde CDN para mostrar PDFs."""
+    html_viewer = """<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Visor PDF</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+html, body { margin: 0; padding: 0; height: 100%; }
+iframe { border: none; width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+<iframe id="visor"></iframe>
+<script>
+const params = new URLSearchParams(window.location.search);
+const file = params.get("file");
+if (!file) {
+  document.body.innerHTML = "<p>No se proporcionó un archivo PDF.</p>";
+} else {
+  document.getElementById("visor").src =
+    "https://mozilla.github.io/pdf.js/web/viewer.html?file=" + encodeURIComponent(file);
+}
+</script>
+</body>
+</html>"""
+    ruta_viewer = os.path.join(BASE_DIR, "viewer.html")
+    with open(ruta_viewer, "w", encoding="utf-8") as f:
+        f.write(html_viewer)
+    print("viewer.html generado correctamente")
+
+
 # --- Ejecución ---
 
 pdf_files = buscar_pdfs_en_root(PDF_DIR)
@@ -373,5 +406,6 @@ crear_favicon()
 crear_manifest()
 crear_service_worker(pdf_files)
 generar_html(pdf_files)
+generar_viewer_html()
 
 print("✅ Sitio PWA estático generado en '/' listo para GitHub Pages.")
