@@ -147,7 +147,7 @@ def crear_manifest():
         "description": "Visualizador de PDFs con miniaturas",
         "icons": [
             {"src": "logo_pwa.png", "sizes": "192x192", "type": "image/png"},
-            {"src": "logo_pwa.png", "sizes": "512x512", "type": "image/png"},
+            {"src": "logo_pwa-512.png", "sizes": "512x512", "type": "image/png"},
             {
                 "src": "favicon.ico",
                 "sizes": "512x512, 256x256, 128x128 64x64 32x32 24x24 16x16",
@@ -511,8 +511,8 @@ if (!file) {
 pdf_files = buscar_pdfs_en_root(PDF_DIR)
 extraer_miniaturas(pdf_files)
 crear_logo_pdf()
-crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo-192.png"), tamaño=(192,192))
-crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo-512.png"), tamaño=(512,512))
+crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo_pwa.png"), tamaño=(192,192))
+crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo_pwa-512.png"), tamaño=(512,512))
 crear_favicon()
 crear_manifest()
 crear_service_worker(pdf_files)
