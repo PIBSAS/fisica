@@ -117,7 +117,7 @@ def crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo_pwa.png"), tamaño
                 break
         fuente_size -= 1
     
-    posicion = ((2*radio - ancho_texto)//2, (2*radio - alto_texto)//2)
+    posicion = ((2*radio - texto_ancho)//2, (2*radio - texto_alto)//2)
     draw.text(posicion, texto, fill=texto_blanco, font=fuente)
 
     img.save(ruta_salida, "PNG")
