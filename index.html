@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fisica</title>
+    <link rel="icon" type="image/x-icon" href="static/favicon.ico">
+    <link rel="manifest" href="static/site.webmanifest">
+    <script src="static/service-worker.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+        }
+        
+        #fondo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        #logo {
+            margin: 20px auto;
+            width: 256px;
+            height: auto;
+            text-align: center;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        
+        #logo img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        
+        .pdfs-container {
+            display: grid;
+            gap: 20px;
+            justify-items: center;
+            padding: 20px;
+        }
+
+        .pdfs-container.few-1 { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+        .pdfs-container.few-2 { grid-template-columns: repeat(2, 1fr); max-width: 700px; margin: 0 auto; }
+        .pdfs-container:not(.few-1):not(.few-2) { grid-template-columns: repeat(3, 1fr); max-width: 100%; margin: 0 auto; }
+
+
+        .pdf-container {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background: #fff;
+            transition: transform 0.2s;
+            width: 100%;      /* llena la celda del grid */
+            max-width: 332px; /* el ancho de la miniatura */
+        }
+        
+        .pdf-container:hover {
+            transform: scale(1.05);
+        }
+        
+        .pdf-thumbnail {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+            display: block;
+        }
+
+        .pdf-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .pdf-row-few {
+            justify-content: center;
+        }
+        
+        .pdf-title {
+            text-align:center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        
+        @media (max-width: 768px) {
+            #pdfs-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #pdfs-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px 0;
+            color: #555;
+            font-size: 12px;
+        }
+        
+        footer img {
+            max-width: 50px;
+            margin-bottom: 5px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 12px;
+            color: #555;
+        }
+        
+        h2 {
+            background-color: rgba(255, 255, 255, 0.8); 
+            color: #333;                             
+            text-align: center;                        
+            padding: 10px 0;                            
+            margin: 20px 40px;                      
+            border-radius: 10px;                    
+            width: calc(100% - 80px);                               
+            box-sizing: border-box;                       
+        }
+    </style>
+    <div id="fondo"></div>
+    <script>
+    const fondo = document.getElementById('fondo');
+    let hue = 0;
+    function animateBackground() {
+        hue = (hue + 0.5) % 360;
+        fondo.style.background = `linear-gradient(135deg, hsl(${hue}, 70%, 80%), hsl(${(hue+60)%360}, 70%, 80%))`;
+        requestAnimationFrame(animateBackground);
+    }
+    animateBackground();
+</script>
+    <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register("static/service-worker.js").then(function(registration) {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function(err) {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+  </script>
+</head>
+<body>
+    <div id="logo">
+        <img src="static/logo.webp" alt="fisica">
+    </div>
+    <div class="pdfs-container">
+
+        <div class="pdf-container">
+            <img src="static/05%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_6%20137-141.webp" class="pdf-thumbnail" onclick="window.open('05%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_6%20137-141.pdf', '_blank')">
+            <p class="pdf-title">05 Leer Física para Ciencias e Ingeniería Vol 1 Cap 6 137 141</p>
+        </div>
+
+        <div class="pdf-container">
+            <img src="static/03%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_5%20111-119.webp" class="pdf-thumbnail" onclick="window.open('03%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_5%20111-119.pdf', '_blank')">
+            <p class="pdf-title">03 Leer Física para Ciencias e Ingeniería Vol 1 Cap 5 111 119</p>
+        </div>
+
+        <div class="pdf-container">
+            <img src="static/09%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_9%20242-249.webp" class="pdf-thumbnail" onclick="window.open('09%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_9%20242-249.pdf', '_blank')">
+            <p class="pdf-title">09 Leer Física para Ciencias e Ingeniería Vol 1 Cap 9 242 249</p>
+        </div>
+
+        <div class="pdf-container">
+            <img src="static/07%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_7%20163-177.webp" class="pdf-thumbnail" onclick="window.open('07%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_7%20163-177.pdf', '_blank')">
+            <p class="pdf-title">07 Leer Física para Ciencias e Ingeniería Vol 1 Cap 7 163 177</p>
+        </div>
+
+        <div class="pdf-container">
+            <img src="static/08%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_9%20232-242.webp" class="pdf-thumbnail" onclick="window.open('08%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_9%20232-242.pdf', '_blank')">
+            <p class="pdf-title">08 Leer Física para Ciencias e Ingeniería Vol 1 Cap 9 232 242</p>
+        </div>
+
+        <div class="pdf-container">
+            <img src="static/04%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_5%20115-123.webp" class="pdf-thumbnail" onclick="window.open('04%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_5%20115-123.pdf', '_blank')">
+            <p class="pdf-title">04 Leer Física para Ciencias e Ingeniería Vol 1 Cap 5 115 123</p>
+        </div>
+
+        <div class="pdf-container">
+            <img src="static/00%20Tema_%202013-04%20_%20F%C3%ADsica%201%20%282013%29%20_%20UNM%20-%20Campus%20Virtual_Septiembre.webp" class="pdf-thumbnail" onclick="window.open('00%20Tema_%202013-04%20_%20F%C3%ADsica%201%20%282013%29%20_%20UNM%20-%20Campus%20Virtual_Septiembre.pdf', '_blank')">
+            <p class="pdf-title">00 Tema  2013 04   Física 1 (2013)   UNM   Campus Virtual Septiembre</p>
+        </div>
+
+        <div class="pdf-container">
+            <img src="static/02%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_5%20100-111.webp" class="pdf-thumbnail" onclick="window.open('02%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_5%20100-111.pdf', '_blank')">
+            <p class="pdf-title">02 Leer Física para Ciencias e Ingeniería Vol 1 Cap 5 100 111</p>
+        </div>
+
+        <div class="pdf-container">
+            <img src="static/01%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_2%2027-34.webp" class="pdf-thumbnail" onclick="window.open('01%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_2%2027-34.pdf', '_blank')">
+            <p class="pdf-title">01 Leer Física para Ciencias e Ingeniería Vol 1 Cap 2 27 34</p>
+        </div>
+
+        <div class="pdf-container">
+            <img src="static/06%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_6%20139-141.webp" class="pdf-thumbnail" onclick="window.open('06%20Leer%20F%C3%ADsica%20para%20Ciencias%20e%20Ingenier%C3%ADa%20Vol%201%20Cap_6%20139-141.pdf', '_blank')">
+            <p class="pdf-title">06 Leer Física para Ciencias e Ingeniería Vol 1 Cap 6 139 141</p>
+        </div>
+
+    </div>
+</body>
+</html>
