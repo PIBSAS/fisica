@@ -63,23 +63,27 @@ def crear_logo_pdf(ruta_salida=os.path.join(STATIC_DIR, "logo.webp"), tamaño=(2
 
     img = Image.new("RGB", tamaño, fondo_rojo)
     draw = ImageDraw.Draw(img)
-
-    try:
-        fuente = ImageFont.truetype(
-            os.path.join(BASE_DIR, "arialbd.ttf"),
-            size=int(tamaño[1]*0.4)
-        )
-    except OSError:
-        fuente = ImageFont.load_default()
-
     texto = "Física"
+    padding = int(tamaño[0] * 0.1)
+    
+    fuente_size = int(tamaño[1] * 0.8)
+    while fuente_size > 1:
+        try:
+            fuente = ImageFont.truetype(os.path.join(BASE_DIR, "arialbd.ttf"), size=fuente_size)
+        except OSError:
+            fuente = ImageFont.load_default()
+            break
+
     bbox = draw.textbbox((0, 0), texto, font=fuente)
     texto_ancho = bbox[2] - bbox[0]
     texto_alto = bbox[3] - bbox[1]
+    if texto_ancho <= tamaño[0] - 2*padding and texto_alto <= tamaño[1] - 2*padding:
+            break
+    fuente_size -= 1
     posicion = ((tamaño[0] - texto_ancho) // 2, (tamaño[1] - texto_alto) // 2)
 
     draw.text(posicion, texto, fill=texto_blanco, font=fuente)
-    img.resize(tamaño, Image.LANCZOS)
+    
     img.save(ruta_salida, "WEBP")
     print(f"Logo PDF creado: {ruta_salida}")
 
@@ -95,21 +99,25 @@ def crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo_pwa.png"), tamaño
     # Dibujar círculo rojo de fondo
     radio = min(tamaño)//2
     draw.ellipse((0, 0, 2*radio, 2*radio), fill=fondo_rojo)
-
-    # Fuente grande y centrada
-    try:
-        fuente = ImageFont.truetype(
-            os.path.join(BASE_DIR, "arialbd.ttf"),
-            size=int(tamaño[1]*0.4)  # 40% de la altura de la imagen
-        )
-    except OSError:
-        fuente = ImageFont.load_default()
-
     texto = "Física"
+    padding = int(radio * 0.2)
+    fuente_size = int(radio * 1.5)  # empezar grande
+    while fuente_size > 1:
+        try:
+            fuente = ImageFont.truetype(os.path.join(BASE_DIR, "arialbd.ttf"), size=fuente_size)
+        except OSError:
+            fuente = ImageFont.load_default()
+            break
+            
     bbox = draw.textbbox((0, 0), texto, font=fuente)
     texto_ancho = bbox[2] - bbox[0]
     texto_alto = bbox[3] - bbox[1]
-    posicion = ((tamaño[0]-texto_ancho)//2, (tamaño[1]-texto_alto)//2)
+    
+    if texto_ancho <= 2*radio - 2*padding and texto_alto <= 2*radio - 2*padding:
+            break
+        fuente_size -= 1
+    
+    posicion = ((2*radio - ancho_texto)//2, (2*radio - alto_texto)//2)
     draw.text(posicion, texto, fill=texto_blanco, font=fuente)
 
     img.save(ruta_salida, "PNG")
@@ -443,6 +451,10 @@ if (!file) {
 }
 </script>
 </body>
+<footer>
+        <img src="/static/logo.webp" alt="{folder_name}">
+        <p>© 2025 Física Web App</p>
+    </footer>
 </html>"""
  
     ruta_viewer = os.path.join(STATIC_DIR, "viewer.html")
