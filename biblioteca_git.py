@@ -450,11 +450,11 @@ if (!file) {
     "pdfjs/web/viewer.html?file=" + encodeURIComponent("../../../"+ file);
 }
 </script>
-</body>
 <footer>
         <img src="static/logo.webp" alt="{folder_name}">
         <p>© 2025 Física Web App</p>
     </footer>
+    </body>
 </html>"""
  
     ruta_viewer = os.path.join(STATIC_DIR, "viewer.html")
