@@ -161,7 +161,7 @@ def crear_manifest():
 
 def crear_service_worker(pdfs):
     """Crea el service-worker.js para caché de la PWA."""
-    urls = ["./", "logo.webp", "favicon.ico", "site.webmanifest"]
+    urls = ["./", "logo.webp", "logo_pwa.png" "favicon.ico", "site.webmanifest"]
     
     for _, _, archivo in pdfs:
         base = os.path.splitext(archivo)[0]
@@ -261,7 +261,7 @@ def generar_html(pdfs):
         
         #logo {{
             margin: 20px auto;
-            width: 1024px;
+            width: 256px;
             height: auto;
             text-align: center;
             border-radius: 30px;
