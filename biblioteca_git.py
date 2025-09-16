@@ -411,7 +411,7 @@ def generar_html(pdfs):
     function abrirPDF(pdf) {{
         const modal = document.getElementById('modal-visor');
         const iframe = document.getElementById('visor-pdf');
-        iframe.src = `pdfjs/web/viewer.html?file=${{encodeURIComponent("../../../" + pdf)}}`;
+        iframe.src = `static/pdfjs/web/viewer.html?file=${{encodeURIComponent("../../../" + pdf)}}`;
         modal.style.display = 'block';
     }}
     function cerrarModal() {{
