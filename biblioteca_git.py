@@ -69,7 +69,7 @@ def crear_logo_pdf(ruta_salida=os.path.join(STATIC_DIR, "logo.webp"), tamaño=(2
     try:
         fuente = ImageFont.truetype(
             os.path.join(BASE_DIR, "arialbd.ttf"),
-            size=int(tamaño_alta_res[1])
+            size=int(tamaño_alta_res[1]*0.8)
         )
     except OSError:
         fuente = ImageFont.load_default()
