@@ -56,7 +56,7 @@ def sanitizar_nombre(nombre):
     return nombre_limpio
 
 
-def crear_logo_pdf(ruta_salida=os.path.join(STATIC_DIR, "logo.webp"), tamaño=(256, 256)):
+def crear_logo_pdf(ruta_salida=os.path.join(STATIC_DIR, "logo.webp"), tamaño=(1024, 1024)):
     """Crea un logo PDF en formato WEBP."""
     fondo_rojo = (220, 20, 60)
     texto_blanco = (255, 255, 255)
@@ -87,7 +87,7 @@ def crear_logo_pdf(ruta_salida=os.path.join(STATIC_DIR, "logo.webp"), tamaño=(2
     img.save(ruta_salida, "WEBP")
     print(f"Logo PDF creado: {ruta_salida}")
 
-def crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo_pwa.png"), tamaño=(512, 512)):
+def crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo_pwa.png"), tamaño=(1024, 1024)):
     """Crea un logo circular para PWA / Google Play en PNG 512x512."""
     fondo_rojo = (220, 20, 60, 255)  # RGBA
     texto_blanco = (255, 255, 255, 255)
@@ -126,7 +126,7 @@ def crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo_pwa.png"), tamaño
 
 def crear_favicon():
     """Crea favicon.ico a partir del logo."""
-    ruta_logo = os.path.join(STATIC_DIR, "logo_pwa.png")
+    ruta_logo = os.path.join(STATIC_DIR, "logo.webp")
     ruta_fav = os.path.join(STATIC_DIR, "favicon.ico")
     img = Image.open(ruta_logo).convert("RGBA")
     img = img.resize((1024, 1024), Image.LANCZOS)
@@ -144,13 +144,12 @@ def crear_manifest():
         "display": "standalone",
         "background_color": "#dc143c",
         "theme_color": "#dc143c",
-        "description": "Visualizador de PDFs con miniaturas",
+        "description": "Lecturas de Física 1",
         "icons": [
-            {"src": "logo_pwa.png", "sizes": "192x192", "type": "image/png"},
-            {"src": "logo_pwa-512.png", "sizes": "512x512", "type": "image/png"},
+            {"src": "logo_pwa.png", "sizes": "1024x1024", "type": "image/png"},
             {
                 "src": "favicon.ico",
-                "sizes": "512x512, 256x256, 128x128 64x64 32x32 24x24 16x16",
+                "sizes": "1024x1024",
                 "type": "image/x-icon",
             },
         ],
@@ -162,11 +161,11 @@ def crear_manifest():
 
 def crear_service_worker(pdfs):
     """Crea el service-worker.js para caché de la PWA."""
-    urls = ["./", "logo_pwa.png", "favicon.ico", "site.webmanifest"]
+    urls = ["./", "logo.webp", "favicon.ico", "site.webmanifest"]
     
     for _, _, archivo in pdfs:
         base = os.path.splitext(archivo)[0]
-        miniatura = quote(f"{base}.png")
+        miniatura = quote(f"{base}.webp")
         pdf_url = quote(f"{archivo}")
         urls.append(pdf_url)
         urls.append(miniatura)
@@ -262,7 +261,7 @@ def generar_html(pdfs):
         
         #logo {{
             margin: 20px auto;
-            width: 256px;
+            width: 1024px;
             height: auto;
             text-align: center;
             border-radius: 30px;
@@ -346,13 +345,13 @@ def generar_html(pdfs):
             margin-top: 30px;
             padding: 15px 0;
             color: #555;
-            font-size: 12px;
+            font-size: 14px;
         }}
         
         footer img {{
             max-width: 50px;
             margin-bottom: 5px;
-            border-radius: 20px;
+            border-radius: 50px;
             overflow: hidden;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }}
@@ -511,8 +510,7 @@ if (!file) {
 pdf_files = buscar_pdfs_en_root(PDF_DIR)
 extraer_miniaturas(pdf_files)
 crear_logo_pdf()
-crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo_pwa.png"), tamaño=(192,192))
-crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo_pwa-512.png"), tamaño=(512,512))
+crear_logo_pwa()
 crear_favicon()
 crear_manifest()
 crear_service_worker(pdf_files)
@@ -520,4 +518,4 @@ descargar_pdfjs()
 generar_html(pdf_files)
 generar_viewer_html()
 
-print("✅ Sitio PWA estático generado en '/' listo para GitHub Pages.")
+print("Sitio PWA estático generado en '/' listo para GitHub Pages.")
