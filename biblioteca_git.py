@@ -389,8 +389,8 @@ def generar_html(pdfs):
         }}
         
         #modal-visor .cerrar {{
-            position:absolute; top:11px; right:10px;
-            font-size:30px; color:white;
+            position:absolute; top:20px; right:10px;
+            font-size:30px; color:green;
             cursor:pointer;
             z-index: 10000;
         }}
