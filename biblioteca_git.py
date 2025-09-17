@@ -484,9 +484,9 @@ def generar_html(pdfs):
                 <p class="pdf-title">{titulo_limpio}</p>
             </div>
 """
-    html += "</div>\n"
+        html += "</div>\n"
 
-html += """
+    html += """
 <div id="modal-visor">
     <span class="cerrar" onclick="cerrarModal()">&times;</span>
     <iframe id="visor-pdf"></iframe>
