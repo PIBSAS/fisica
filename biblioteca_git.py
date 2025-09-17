@@ -91,37 +91,39 @@ def crear_logo_pwa(ruta_salida=os.path.join(STATIC_DIR, "logo_pwa.png"), tamaño
     """Crea un logo circular para PWA / Google Play en PNG 512x512."""
     fondo_rojo = (220, 20, 60, 255)  # RGBA
     texto_blanco = (255, 255, 255, 255)
+    tamaños = [192, 512, 1024]
+    for size in tamaños:
+        # Imagen base RGBA
+        img = Image.new("RGBA", (size, size), (0, 0, 0, 0))  # fondo transparente
+        draw = ImageDraw.Draw(img)
 
-    # Imagen base RGBA
-    img = Image.new("RGBA", tamaño, (0, 0, 0, 0))  # fondo transparente
-    draw = ImageDraw.Draw(img)
-
-    # Dibujar círculo rojo de fondo
-    radio = min(tamaño)//2
-    draw.ellipse((0, 0, 2*radio, 2*radio), fill=fondo_rojo)
-    texto = "Física"
-    padding = int(radio * 0.2)
-    fuente_size = int(radio * 1.5)  # empezar grande
-    while fuente_size > 1:
-        try:
-            fuente = ImageFont.truetype(os.path.join(BASE_DIR, "arialbd.ttf"), size=fuente_size)
-        except OSError:
-            fuente = ImageFont.load_default()
-            break
-            
-        bbox = draw.textbbox((0, 0), texto, font=fuente)
-        texto_ancho = bbox[2] - bbox[0]
-        texto_alto = bbox[3] - bbox[1]
-        
-        if texto_ancho <= 2*radio - 2*padding and texto_alto <= 2*radio - 2*padding:
+        # Dibujar círculo rojo de fondo
+        radio = size // 2
+        draw.ellipse((0, 0, 2*radio, 2*radio), fill=fondo_rojo)
+        texto = "Física"
+        padding = int(radio * 0.2)
+        fuente_size = int(radio * 1.5)
+        while fuente_size > 1:
+            try:
+                fuente = ImageFont.truetype(os.path.join(BASE_DIR, "arialbd.ttf"), size=fuente_size)
+            except OSError:
+                fuente = ImageFont.load_default()
                 break
-        fuente_size -= 1
-    
-    posicion = ((2*radio - texto_ancho)//2, (2*radio - texto_alto)//2)
-    draw.text(posicion, texto, fill=texto_blanco, font=fuente)
+                
+            bbox = draw.textbbox((0, 0), texto, font=fuente)
+            texto_ancho = bbox[2] - bbox[0]
+            texto_alto = bbox[3] - bbox[1]
+            
+            if texto_ancho <= 2*radio - 2*padding and texto_alto <= 2*radio - 2*padding:
+                    break
+            fuente_size -= 1
+        
+        posicion = ((2*radio - texto_ancho)//2, (2*radio - texto_alto)//2)
+        draw.text(posicion, texto, fill=texto_blanco, font=fuente)
 
-    img.save(ruta_salida, "PNG")
-    print(f"Logo PWA creado: {ruta_salida}")
+        ruta_salida = os.path.join(STATIC_DIR, f"logo_pwa-{size}.png")
+        img.save(ruta_salida, "PNG")
+        print(f"Logo PWA creado: {ruta_salida}")
 
 
 def crear_favicon():
@@ -146,7 +148,9 @@ def crear_manifest():
         "theme_color": "#dc143c",
         "description": "Lecturas de Física 1",
         "icons": [
-            {"src": "logo_pwa.png", "sizes": "1024x1024", "type": "image/png"},
+            {"src": "logo_pwa-192.png", "sizes": "192x192", "type": "image/png"},
+            {"src": "logo_pwa-512.png", "sizes": "512x512", "type": "image/png"},
+            {"src": "logo_pwa-1024.png", "sizes": "1024x1024", "type": "image/png"},
             {
                 "src": "favicon.ico",
                 "sizes": "512x512, 256x25, 192x192, 128x128, 64x64, 32x32, 16x16",
@@ -161,7 +165,7 @@ def crear_manifest():
 
 def crear_service_worker(pdfs):
     """Crea el service-worker.js para caché de la PWA."""
-    urls = ["./", "logo.webp", "logo_pwa.png", "favicon.ico", "site.webmanifest"]
+    urls = ["./", "logo.webp", "logo_pwa.png", "logo_pwa-192.png", "logo_pwa-512.png", "logo_pwa-1024.png", "favicon.ico", "site.webmanifest", "pdfjs/web/viewer.html", "pdfjs/build/pdf.js", "pdfjs/build/pdf.worker.js"]
     
     for _, _, archivo in pdfs:
         base = os.path.splitext(archivo)[0]
