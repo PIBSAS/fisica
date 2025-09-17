@@ -165,12 +165,12 @@ def crear_manifest():
 
 def crear_service_worker(pdfs):
     """Crea el service-worker.js para caché de la PWA."""
-    urls = ["./", "static/logo.webp", "static/logo_pwa.png", "static/logo_pwa-192.png", "static/logo_pwa-512.png", "static/logo_pwa-1024.png", "static/favicon.ico", "static/site.webmanifest", "static/pdfjs/web/viewer.html", "static/pdfjs/build/pdf.js", "static/pdfjs/build/pdf.worker.js"]
+    urls = ["./", "static/logo.webp", "static/logo_pwa.png", "static/logo_pwa-192.png", "static/logo_pwa-512.png", "static/logo_pwa-1024.png", "static/favicon.ico", "static/site.webmanifest", "static/pdfjs/web/viewer.html", "static/pdfjs/build/pdf.mjs", "static/pdfjs/build/pdf.worker.mjs"]
     
     for _, _, archivo in pdfs:
         base = os.path.splitext(archivo)[0]
         miniatura = quote(f"static/{base}.webp")
-        pdf_url = quote(f"{archivo}")
+        pdf_url = quote(f"./{archivo}")
         urls.append(pdf_url)
         urls.append(miniatura)
         
