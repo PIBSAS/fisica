@@ -459,19 +459,27 @@ def generar_html(pdfs):
     </div>
     <div class="pdfs-container">
 """
-    for _, carpeta_rel, archivo in pdfs:
+    for ruta_completa, carpeta_rel, archivo in pdfs:
+    if carpeta_rel == ".":
+        ruta_pdf = archivo
+    else:
+        ruta_pdf = f"{carpeta_rel}/{archivo}"
+    ruta_pdf_js = ruta_pdf.replace("\\", "/")
+    titulo_limpio = sanitizar_nombre(archivo)
+    ruta_miniatura = quote(f"static/{os.path.splitext(archivo)[0]}.webp"
+    
     #for _, _, archivo in pdfs:
-        base = os.path.splitext(archivo)[0]
-        titulo_limpio = sanitizar_nombre(base)
-        ruta_miniatura = quote(f"static/{base}.webp")
-        ruta_pdf = os.path.join(carpeta_rel, archivo) if carpeta_rel != "." else archivo
-        ruta_pdf = quote(ruta_pdf)
+        #base = os.path.splitext(archivo)[0]
+        #titulo_limpio = sanitizar_nombre(base)
+        #ruta_miniatura = quote(f"static/{base}.webp")
+        #ruta_pdf = os.path.join(carpeta_rel, archivo) if carpeta_rel != "." else archivo
+        #ruta_pdf = quote(ruta_pdf)
         #ruta_pdf = quote(f"{archivo}")
-        html += f"""
-        <div class="pdf-container">
-            <img src="{ruta_miniatura}" class="pdf-thumbnail" onclick="abrirPDF('{ruta_pdf}')">
-            <p class="pdf-title">{titulo_limpio}</p>
-        </div>
+    html += f"""
+    <div class="pdf-container">
+        <img src="{ruta_miniatura}" class="pdf-thumbnail" onclick="abrirPDF('{ruta_pdf_js}')">
+        <p class="pdf-title">{titulo_limpio}</p>
+    </div>
 """
 
     html += """
