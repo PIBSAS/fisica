@@ -470,8 +470,14 @@ def generar_html(pdfs):
         
     for carpeta, archivos in sorted(pdfs_por_carpeta.items(), key=lambda x: x[0].lower()):
         titulo_carpeta = "Raíz" if carpeta == "." else sanitizar_nombre(carpeta)
+        clase_grid = ""
+        if len(archivos) == 1:
+            clase_grid = "few-1"
+        elif len(archivos) == 2:
+            clase_grid = "few-2"
+            
         html += f"<h2>{titulo_carpeta}</h2>\n"
-        html += '<div class="pdfs-container">\n'
+        html += '<div class="pdfs-container {clase_grid}">\n'
     
         for ruta_completa, archivo in sorted(archivos, key=lambda x: x[1].lower()):
             ruta_pdf_js = f"/{REPO}/{os.path.relpath(ruta_completa, BASE_DIR).replace(os.sep, '/')}"
