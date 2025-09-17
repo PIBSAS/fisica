@@ -469,7 +469,7 @@ def generar_html(pdfs):
         pdfs_por_carpeta[carpeta_rel].append((ruta_completa, archivo))
         
     for carpeta, archivos in sorted(pdfs_por_carpeta.items(), key=lambda x: x[0].lower()):
-        titulo_carpeta = "Raíz" if carpeta == "." else sanitizar_nombre(carpeta)
+        titulo_carpeta = "Raíz" if carpeta == "." else sanitizar_nombre(os.path.basename(carpeta))
         clase_grid = ""
         if len(archivos) == 1:
             clase_grid = "few-1"
