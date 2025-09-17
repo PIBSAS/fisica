@@ -462,7 +462,7 @@ def generar_html(pdfs):
 """
     for ruta_completa, carpeta_rel, archivo in pdf_files:
         # ruta completa desde la raíz del repo
-        ruta_pdf_js = "/" + os.path.relpath(ruta_completa, BASE_DIR).replace("\\", "/")
+        ruta_pdf_js = "/fisica/" + os.path.relpath(ruta_completa, BASE_DIR).replace("\\", "/")
         print(ruta_pdf_js)
         titulo_limpio = sanitizar_nombre(archivo)
         ruta_miniatura = quote(f"static/{os.path.splitext(archivo)[0]}.webp")
