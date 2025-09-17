@@ -432,7 +432,7 @@ def generar_html(pdfs):
         const modal = document.getElementById('modal-visor');
         const iframe = document.getElementById('visor-pdf');
         #iframe.src = `static/pdfjs/web/viewer.html?file=${{encodeURIComponent("../../../" + pdf)}}`;
-        iframe.src = `static/pdfjs/web/viewer.html?file=${pdf}`;
+        iframe.src = `static/pdfjs/web/viewer.html?file=${{pdf}}`;
         modal.style.display = 'block';
     }}
     function cerrarModal() {{
