@@ -262,7 +262,7 @@ def generar_html(pdfs):
     <title>{folder_name}</title>
     <link rel="icon" type="image/x-icon" href="static/favicon.ico">
     <link rel="manifest" href="static/site.webmanifest">
-    <script src="static/service-worker.js"></script>
+    <script src="service-worker.js"></script>
     <style>
         html, body {{
             margin: 0;
@@ -460,23 +460,33 @@ def generar_html(pdfs):
     </div>
     <div class="pdfs-container">
 """
+    from collections import defaultdict
+    pdfs_por_carpeta = defaultdict(list)
+    
     for ruta_completa, carpeta_rel, archivo in pdf_files:
         if archivo == "compressed.tracemonkey-pldi-09.pdf":
             continue
-        ruta_pdf_js = f"/{REPO}/{os.path.relpath(ruta_completa, BASE_DIR).replace(os.sep, "/")}"
-        titulo_limpio = sanitizar_nombre(archivo)
-        ruta_miniatura = quote(f"static/{os.path.splitext(archivo)[0]}.webp")
+        pdfs_por_carpeta[carpeta_rel].append((ruta_completa, archivo))
         
-        html += f"""
-        <div class="pdf-container">
-            <img src="{ruta_miniatura}" class="pdf-thumbnail" onclick="abrirPDF('{ruta_pdf_js}')">
-            <p class="pdf-title">{titulo_limpio}</p>
-        </div>
+    for carpeta, archivos in sorted(pdfs_por_carpeta.items(), key=lambda x: x[0].lower()):
+        titulo_carpeta = "." if carpeta == "." else sanitizar_nombre(carpeta)
+        html += f"<h2>{titulo_carpeta}</h2>\n"
+        html += '<div class="pdfs-container">\n'
+    
+        for ruta_completa, archivo in sorted(archivos, key=lambda x: x[1].lower()):
+            ruta_pdf_js = f"/{REPO}/{os.path.relpath(ruta_completa, BASE_DIR).replace(os.sep, '/')}"
+            titulo_limpio = sanitizar_nombre(archivo)
+            ruta_miniatura = quote(f"static/{os.path.splitext(archivo)[0]}.webp")
+        
+            html += f"""
+            <div class="pdf-container">
+                <img src="{ruta_miniatura}" class="pdf-thumbnail" onclick="abrirPDF('{ruta_pdf_js}')">
+                <p class="pdf-title">{titulo_limpio}</p>
+            </div>
 """
+    html += "</div>\n"
 
-    html += """
-</div>
-
+html += """
 <div id="modal-visor">
     <span class="cerrar" onclick="cerrarModal()">&times;</span>
     <iframe id="visor-pdf"></iframe>
@@ -530,15 +540,14 @@ if (!file) {
 
 # --- Ejecución ---
 
-#pdf_files = buscar_pdfs_en_root(PDF_DIR)
 pdf_files = buscar_pdfs_recursivo(PDF_DIR)
 extraer_miniaturas(pdf_files)
+descargar_pdfjs()
 crear_logo_pdf()
 crear_logo_pwa()
 crear_favicon()
 crear_manifest()
 crear_service_worker(pdf_files)
-descargar_pdfjs()
 generar_html(pdf_files)
 generar_viewer_html()
 
