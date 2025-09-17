@@ -36,16 +36,17 @@ def descargar_pdfjs():
 
     os.remove(zip_path)
     print("PDF.js instalado en static/pdfjs/")
-"""   
-def buscar_pdfs_en_root(base_dir):
-    """Busca PDFs en la carpeta raíz y devuelve lista de tuplas (ruta, carpeta, archivo)."""
-    pdfs = []
-    for f in os.listdir(base_dir):
-        if f.lower().endswith(".pdf"):
-            pdfs.append((os.path.join(base_dir, f), ".", f))
-    pdfs.sort(key=lambda x:  x[2].lower())
-    return pdfs
-"""
+
+if False:
+    def buscar_pdfs_en_root(base_dir):
+        """Busca PDFs en la carpeta raíz y devuelve lista de tuplas (ruta, carpeta, archivo)"""
+        pdfs = []
+        for f in os.listdir(base_dir):
+            if f.lower().endswith(".pdf"):
+                pdfs.append((os.path.join(base_dir, f), ".", f))
+        pdfs.sort(key=lambda x:  x[2].lower())
+        return pdfs
+
 
 def buscar_pdfs_recursivo(base_dir):
     """Busca PDFs en base_dir y subcarpetas, devuelve lista de tuplas (ruta_completa, carpeta_relativa, archivo)."""
