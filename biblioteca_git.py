@@ -36,7 +36,7 @@ def descargar_pdfjs():
 
     os.remove(zip_path)
     print("PDF.js instalado en static/pdfjs/")
-    
+"""   
 def buscar_pdfs_en_root(base_dir):
     """Busca PDFs en la carpeta raíz y devuelve lista de tuplas (ruta, carpeta, archivo)."""
     pdfs = []
@@ -45,7 +45,20 @@ def buscar_pdfs_en_root(base_dir):
             pdfs.append((os.path.join(base_dir, f), ".", f))
     pdfs.sort(key=lambda x:  x[2].lower())
     return pdfs
+"""
 
+def buscar_pdfs_recursivo(base_dir):
+    """Busca PDFs en base_dir y subcarpetas, devuelve lista de tuplas (ruta_completa, carpeta_relativa, archivo)."""
+    pdfs = []
+    for root, _, files in os.walk(base_dir):
+        for f in files:
+            if f.lower().endswith(".pdf"):
+                ruta_completa = os.path.join(root, f)
+                carpeta_relativa = os.path.relpath(root, base_dir)
+                pdfs.append((ruta_completa, carpeta_relativa, f))
+    # Orden: primero carpeta, luego nombre de archivo
+    pdfs.sort(key=lambda x: (x[1].lower(), x[2].lower()))
+    return pdfs
 
 def sanitizar_nombre(nombre):
     """Sanitiza el nombre reemplazando guiones y guiones bajos por espacios y capitalizando."""
@@ -166,12 +179,15 @@ def crear_manifest():
 def crear_service_worker(pdfs):
     """Crea el service-worker.js para caché de la PWA."""
     urls = ["./", "static/logo.webp", "static/logo_pwa.png", "static/logo_pwa-192.png", "static/logo_pwa-512.png", "static/logo_pwa-1024.png", "static/favicon.ico", "static/site.webmanifest", "static/pdfjs/web/viewer.html", "static/pdfjs/build/pdf.mjs", "static/pdfjs/build/pdf.worker.mjs"]
-    
-    for _, _, archivo in pdfs:
+
+    for _, carpeta_rel, archivo in pdfs:
+    #for _, _, archivo in pdfs:
         base = os.path.splitext(archivo)[0]
         miniatura = quote(f"static/{base}.webp")
-        pdf_url = quote(f"./{archivo}")
-        urls.append(pdf_url)
+        ruta_pdf = os.path.join(carpeta_rel, archivo) if carpeta_rel != '.' else archivo
+        ruta_pdf = quote(ruta_pdf)
+        #pdf_url = quote(f"./{archivo}")
+        urls.append(ruta_pdf)
         urls.append(miniatura)
         
     contenido = f"""
@@ -414,7 +430,8 @@ def generar_html(pdfs):
     function abrirPDF(pdf) {{
         const modal = document.getElementById('modal-visor');
         const iframe = document.getElementById('visor-pdf');
-        iframe.src = `static/pdfjs/web/viewer.html?file=${{encodeURIComponent("../../../" + pdf)}}`;
+        #iframe.src = `static/pdfjs/web/viewer.html?file=${{encodeURIComponent("../../../" + pdf)}}`;
+        iframe.src = `static/pdfjs/web/viewer.html?file=${pdf}`;
         modal.style.display = 'block';
     }}
     function cerrarModal() {{
@@ -442,15 +459,17 @@ def generar_html(pdfs):
     </div>
     <div class="pdfs-container">
 """
-
-    for _, _, archivo in pdfs:
+    for _, carpeta_rel, archivo in pdfs:
+    #for _, _, archivo in pdfs:
         base = os.path.splitext(archivo)[0]
         titulo_limpio = sanitizar_nombre(base)
         ruta_miniatura = quote(f"static/{base}.webp")
-        ruta_pdf = quote(f"{archivo}")
+        ruta_pdf = os.path.join(carpeta_rel, archivo) if carpeta_rel != "." else archivo
+        ruta_pdf = quote(ruta_pdf)
+        #ruta_pdf = quote(f"{archivo}")
         html += f"""
         <div class="pdf-container">
-            <img src="{ruta_miniatura}" class="pdf-thumbnail" onclick="abrirPDF('{archivo}')">
+            <img src="{ruta_miniatura}" class="pdf-thumbnail" onclick="abrirPDF('{ruta_pdf}')">
             <p class="pdf-title">{titulo_limpio}</p>
         </div>
 """
@@ -497,7 +516,7 @@ if (!file) {
   document.body.innerHTML = "<p>No se proporcionó un archivo PDF.</p>";
 } else {
   document.getElementById("visor").src =
-    "pdfjs/web/viewer.html?file=" + encodeURIComponent("../../../"+ file);
+    "pdfjs/web/viewer.html?file=" + encodeURIComponent(file);
 }
 </script>
 </body>
@@ -511,7 +530,8 @@ if (!file) {
 
 # --- Ejecución ---
 
-pdf_files = buscar_pdfs_en_root(PDF_DIR)
+#pdf_files = buscar_pdfs_en_root(PDF_DIR)
+pdf_files = buscar_pdfs_recursivo(PDF_DIR)
 extraer_miniaturas(pdf_files)
 crear_logo_pdf()
 crear_logo_pwa()
