@@ -208,7 +208,7 @@ self.addEventListener("fetch", event => {{
   );
 }});
 """
-    ruta_sw = os.path.join(STATIC_DIR, "service-worker.js")
+    ruta_sw = os.path.join(BASE_DIR, "service-worker.js")
     with open(ruta_sw, "w", encoding="utf-8") as f:
         f.write(contenido.strip())
 
