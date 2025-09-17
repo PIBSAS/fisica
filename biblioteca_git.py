@@ -10,6 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 BASE_DIR = os.getcwd()
 PDF_DIR = BASE_DIR
+REPO = os.path.basename(BASE_DIR)
 ANCHO = 332
 ALTO = 443
 STATIC_DIR = os.path.join(BASE_DIR, "static")
@@ -59,7 +60,6 @@ def buscar_pdfs_recursivo(base_dir):
                 pdfs.append((ruta_completa, carpeta_relativa, f))
     # Orden: primero carpeta, luego nombre de archivo
     pdfs.sort(key=lambda x: (x[1].lower(), x[2].lower()))
-    print(f"{pdfs}")
     return pdfs
 
 def sanitizar_nombre(nombre):
@@ -183,12 +183,12 @@ def crear_service_worker(pdfs):
     urls = ["./", "static/logo.webp", "static/logo_pwa.png", "static/logo_pwa-192.png", "static/logo_pwa-512.png", "static/logo_pwa-1024.png", "static/favicon.ico", "static/site.webmanifest", "static/pdfjs/web/viewer.html", "static/pdfjs/build/pdf.mjs", "static/pdfjs/build/pdf.worker.mjs"]
 
     for _, carpeta_rel, archivo in pdfs:
-    #for _, _, archivo in pdfs:
+        if archivo == "compressed.tracemonkey-pldi-09.pdf":
+            continue
         base = os.path.splitext(archivo)[0]
         miniatura = quote(f"static/{base}.webp")
         ruta_pdf = os.path.join(carpeta_rel, archivo) if carpeta_rel != '.' else archivo
         ruta_pdf = quote(ruta_pdf)
-        #pdf_url = quote(f"./{archivo}")
         urls.append(ruta_pdf)
         urls.append(miniatura)
         
@@ -255,7 +255,7 @@ def generar_html(pdfs):
     folder_name = os.path.basename(os.getcwd())
 
     html = f"""<!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -461,19 +461,12 @@ def generar_html(pdfs):
     <div class="pdfs-container">
 """
     for ruta_completa, carpeta_rel, archivo in pdf_files:
-        # ruta completa desde la raíz del repo
-        ruta_pdf_js = "/fisica/" + os.path.relpath(ruta_completa, BASE_DIR).replace("\\", "/")
-        print(ruta_pdf_js)
+        if archivo == "compressed.tracemonkey-pldi-09.pdf":
+            continue
+        ruta_pdf_js = f"/{REPO}/{os.path.relpath(ruta_completa, BASE_DIR).replace(os.sep, "/")}"
         titulo_limpio = sanitizar_nombre(archivo)
         ruta_miniatura = quote(f"static/{os.path.splitext(archivo)[0]}.webp")
         
-        #for _, _, archivo in pdfs:
-            #base = os.path.splitext(archivo)[0]
-            #titulo_limpio = sanitizar_nombre(base)
-            #ruta_miniatura = quote(f"static/{base}.webp")
-            #ruta_pdf = os.path.join(carpeta_rel, archivo) if carpeta_rel != "." else archivo
-            #ruta_pdf = quote(ruta_pdf)
-            #ruta_pdf = quote(f"{archivo}")
         html += f"""
         <div class="pdf-container">
             <img src="{ruta_miniatura}" class="pdf-thumbnail" onclick="abrirPDF('{ruta_pdf_js}')">
@@ -504,7 +497,7 @@ def generar_html(pdfs):
 def generar_viewer_html():
     """Genera un viewer.html que usa PDF.js desde CDN para mostrar PDFs."""
     html_viewer = """<!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <title>Visor PDF</title>
