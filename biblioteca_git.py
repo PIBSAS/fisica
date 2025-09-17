@@ -464,7 +464,7 @@ def generar_html(pdfs):
             ruta_pdf = archivo
         else:
             ruta_pdf = f"{carpeta_rel}/{archivo}"
-        ruta_pdf_js = ruta_pdf.replace("\\", "/")
+        ruta_pdf_js = "/" + ruta_pdf.replace("\\", "/")
         titulo_limpio = sanitizar_nombre(archivo)
         ruta_miniatura = quote(f"static/{os.path.splitext(archivo)[0]}.webp")
         
