@@ -59,6 +59,7 @@ def buscar_pdfs_recursivo(base_dir):
                 pdfs.append((ruta_completa, carpeta_relativa, f))
     # Orden: primero carpeta, luego nombre de archivo
     pdfs.sort(key=lambda x: (x[1].lower(), x[2].lower()))
+    print(f"{pdfs}")
     return pdfs
 
 def sanitizar_nombre(nombre):
