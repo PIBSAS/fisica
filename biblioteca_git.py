@@ -315,8 +315,8 @@ def generar_html(pdfs):
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             background: #fff;
             transition: transform 0.2s;
-            width: 100%;      /* llena la celda del grid */
-            max-width: 332px; /* el ancho de la miniatura */
+            width: 100%;
+            max-width: 332px;
         }}
         
         .pdf-container:hover {{
@@ -417,6 +417,7 @@ def generar_html(pdfs):
             z-index: 10000;
         }}
     </style>
+    
     <div id="fondo"></div>
     <script>
     const fondo = document.getElementById('fondo');
@@ -458,7 +459,6 @@ def generar_html(pdfs):
     <div id="logo">
         <img src="static/logo.webp" alt="{folder_name}">
     </div>
-    <div class="pdfs-container">
 """
     from collections import defaultdict
     pdfs_por_carpeta = defaultdict(list)
@@ -469,7 +469,7 @@ def generar_html(pdfs):
         pdfs_por_carpeta[carpeta_rel].append((ruta_completa, archivo))
         
     for carpeta, archivos in sorted(pdfs_por_carpeta.items(), key=lambda x: x[0].lower()):
-        titulo_carpeta = "." if carpeta == "." else sanitizar_nombre(carpeta)
+        titulo_carpeta = "Raíz" if carpeta == "." else sanitizar_nombre(carpeta)
         html += f"<h2>{titulo_carpeta}</h2>\n"
         html += '<div class="pdfs-container">\n'
     
