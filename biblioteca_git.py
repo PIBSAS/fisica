@@ -129,7 +129,7 @@ def crear_favicon():
     ruta_logo = os.path.join(STATIC_DIR, "logo.webp")
     ruta_fav = os.path.join(STATIC_DIR, "favicon.ico")
     img = Image.open(ruta_logo).convert("RGBA")
-    img = img.resize((1024, 1024), Image.LANCZOS)
+    img = img.resize((512, 512), Image.LANCZOS)
     img.save(ruta_fav, format="ICO")
 
 
@@ -149,7 +149,7 @@ def crear_manifest():
             {"src": "logo_pwa.png", "sizes": "1024x1024", "type": "image/png"},
             {
                 "src": "favicon.ico",
-                "sizes": "1024x1024",
+                "sizes": "512x512, 256x25, 192x192, 128x128, 64x64, 32x32, 16x16",
                 "type": "image/x-icon",
             },
         ],
