@@ -497,6 +497,7 @@ def generar_html(pdfs):
     <span class="cerrar" onclick="cerrarModal()">&times;</span>
     <iframe id="visor-pdf"></iframe>
 </div>
+<div class="pdfs-container few-1">
 <h2>Ejercicios Resueltos en video</h2>
     <iframe width="560" height="315"
             src="https://www.youtube.com/embed/videoseries?si=iwcMW8_lYOMiyxTW&amp;list=PLCWTDHDLBfYK9_3pgykvzmkpJqszL0kFi"
@@ -506,6 +507,7 @@ def generar_html(pdfs):
             referrerpolicy="strict-origin-when-cross-origin"
             allowfullscreen>
     </iframe>
+</div>
 <footer>
 <img src="static/logo.webp" alt="{folder_name}">
 <p>© 2025 Física Web App</p>
@@ -524,7 +526,7 @@ def generar_viewer_html():
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Visor PDF</title>
+<title>Física I 2025</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 html, body { margin: 0; padding: 0; height: 100%; }
