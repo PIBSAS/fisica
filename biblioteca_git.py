@@ -497,7 +497,15 @@ def generar_html(pdfs):
     <span class="cerrar" onclick="cerrarModal()">&times;</span>
     <iframe id="visor-pdf"></iframe>
 </div>
-
+<h2>Ejercicios Resueltos en video</h2>
+    <iframe width="560" height="315"
+            src="https://www.youtube.com/embed/videoseries?si=iwcMW8_lYOMiyxTW&amp;list=PLCWTDHDLBfYK9_3pgykvzmkpJqszL0kFi"
+            title="Ejercicios Resueltos en video"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+    </iframe>
 <footer>
 <img src="static/logo.webp" alt="{folder_name}">
 <p>© 2025 Física Web App</p>
