@@ -22,7 +22,7 @@ os.makedirs(STATIC_DIR, exist_ok=True)
 
 def descargar_pdfjs():
     """Descarga y extrae la última versión estable de PDF.js en static/pdfjs/"""
-    url = "https://github.com/mozilla/pdf.js/releases/download/v5.4.149/pdfjs-5.4.149-dist.zip"
+    url = "https://github.com/mozilla/pdf.js/releases/download/v6.1.200/pdfjs-6.1.200-dist.zip"
     zip_path = os.path.join(STATIC_DIR, "pdfjs-dist.zip")
 
     if os.path.exists(PDFJS_DIR):
